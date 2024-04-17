@@ -1,15 +1,18 @@
+# main.py
 import random
 import networkx as nx
 from Room import Room
 from Edge import Edge
 from dijkstra import dijkstra
+import asyncio
+from combo import FireSimulator
+import multiprocessing
 
 # Create a new Graph object
 G = nx.Graph()
 
 # Create Room objects
-rooms = [Room(f"F{i//5+1}-{i%5+1}", False, i//5, i in [0, 4]) for i in range(30)]  # Emergency exits are only at rooms "F1-1" and "F1-5"
-
+rooms = [Room(f"F{i//5+1}-{i%5+1}", False, i//5, i in [0, 4], room_size=30, no_of_doorsandexits=random.randint(1, 2), people_position=[random.randint(0, 30), random.randint(0, 30)], is_wallflamable=False) for i in range(30)]  # Emergency exits are only at rooms "F1-1" and "F1-5"
 
 # Create Edge objects
 edges = [Edge(f"F{i//5+1}-{i%5+1}", f"F{(i+1)//5+1}-{(i+1)%5+1}", random.randint(1, 10)) for i in range(29)]  # Connect each room to the next one
@@ -29,8 +32,32 @@ for edge in edges:
 # Define source room that is the room where the evacuation starts
 source_room = "F4-1"
 
-
 emergency_exit_rooms = [room.room_number for room in rooms if room.is_emergency_exit]
+
+# Room layout matrix
+
+# Initialize building layout matrix
+global matrix
+matrix= [
+    ['#', '#', '#', '#', '#', '#', '#', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', 'P', '#'],
+    ['#', '.', '.', 'F', 'F', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '#'],
+    ['#', '#', '#', '#', 'DE', '#', '#', '#']
+]
+
+def fireSimulatorrunner():
+    asyncio.run(fireSimulatorrunner(matrix))  # replace with the actual function
+process = multiprocessing.Process(target=fireSimulatorrunner)
+process.start()
+    # Stop the process after 10 seconds
+process.join(timeout=10)
+if process.is_alive():
+    print("Stopping the process...")
+    process.terminate()
+    process.join()
 
 # Run Dijkstra's algorithm
 shortest_path, sum_of_weight = dijkstra(G, source_room, emergency_exit_rooms)

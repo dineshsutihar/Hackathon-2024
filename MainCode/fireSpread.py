@@ -1,7 +1,7 @@
 import asyncio
 
 class FireSimulator:
-    def __init__(self, matrix, fire_interval=1, spread_interval=20):
+    def __init__(self, matrix, fire_interval=1, spread_interval=1):
         self.matrix = matrix
         self.fire_interval = fire_interval
         self.spread_interval = spread_interval
@@ -47,16 +47,18 @@ class FireSimulator:
             print()
         print()
 
-# Example usage
-matrix = [
-    ['#', '#', '#', '#', '#', '#', '#', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '#'],
-    ['#', '.', '.', 'F', 'F', '.', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', '.', '#'],
-    ['#', '#', '#', '#', 'DE', '#', '#', '#']
-]
 
-simulator = FireSimulator(matrix)
-asyncio.run(simulator.ignite_fire())
+if __name__ == '__main__':
+    # Example usage
+    matrix = [
+        ['#', '#', '#', '#', '#', '#', '#', '#'],
+        ['#', '.', '.', '.', '.', '.', '.', '#'],
+        ['#', '.', '.', '.', '.', '.', '.', '#'],
+        ['#', '.', '.', 'F', 'F', '.', '.', '#'],
+        ['#', '.', '.', '.', '.', '.', '.', '#'],
+        ['#', '.', '.', '.', '.', '.', '.', '#'],
+        ['#', '#', '#', '#', 'DE', '#', '#', '#']
+    ]
+
+    simulator = FireSimulator(matrix)
+    asyncio.run(simulator.ignite_fire())

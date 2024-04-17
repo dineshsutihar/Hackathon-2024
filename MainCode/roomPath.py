@@ -68,3 +68,17 @@ def get_neighbors(row, col, rows, cols):
         neighbors.append((row + 1, col))
     
     return neighbors
+
+
+
+if __name__ == "__main__":
+    room_grid = [
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0]
+    ]
+    start_row, start_col = 0, 0
+    exit_row, exit_col = 4, 4
+    print(evacuate_without_properties(room_grid, start_row, start_col, exit_row, exit_col))  # Output: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 4), (2, 4), (3, 4), (4, 4)]
