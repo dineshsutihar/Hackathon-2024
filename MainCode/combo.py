@@ -32,8 +32,6 @@ class FireSimulator:
                 break
 
             while True:
-                # Your existing code here...
-
                 # Check if 'P' has reached 'DE'
                 if any(self.matrix[y][x] == 'DE' for y in range(self.height) for x in range(self.width) if self.matrix[y][x] == 'P'):
                     # Replace 'DE' with 'P'
@@ -43,7 +41,8 @@ class FireSimulator:
                                 self.matrix[y][x] = 'P'
                     return  # Stop the async method
 
-                if not self.people or self.on_fire == {(y, x) for y in range(self.height) for x in range(self.width)}:
+                all_cells = {(y, x) for y in range(self.height) for x in range(self.width)}
+                while self.people and self.on_fire != all_cells:
                     break
 
         # After fire is extinguished, initiate evacuation
@@ -74,6 +73,7 @@ class FireSimulator:
         # After fire is extinguished, initiate evacuation
         self.matrix = self.evacuate_without_properties(self.matrix)
         self.print_state()
+        
 
     def print_state(self):
         for y in range(self.height):
@@ -99,6 +99,8 @@ class FireSimulator:
                     self.people.add(next_step)
                     if next_step in self.doors:  # Check if person has reached a door
                         self.escaped = True  # Stop the simulation
+                       
+                        
         return matrix
 
 
@@ -163,21 +165,21 @@ class FireSimulator:
     
 
 
-# if __name__ == '__main__':
-#     # Example usage
-#     matrix = [
-#         ['#', '#', '#', '#', '#', '#', 'DE','#','#', '#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.','#'],
-#         ['#', '.', '.', '.', '.', '.', 'P','.','.','#'],
-#         ['#', '.', '.', '.', '.', '.', '.', '.','.','#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
-#         ['#', '.', '.', 'F', 'F', '.', '.','.','.', '#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
-#         ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
-#         ['#', '#', '#', '#', '#', '#', '#','#','#', '#']
-#     ]
+if __name__ == '__main__':
+    # Example usage
+    matrix = [
+        ['#', '#', '#', '#', '#', '#', 'DE','#','#', '#'],
+        ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
+        ['#', '.', '.', '.', '.', '.', 'F','.','.','#'],
+        ['DE', '.', 'F', '.', '.', '.', '.','.','.','#'],
+        ['#', '.', '.', '.', '.', '.', '.', '.','.','#'],
+        ['#', '.', '.', '.', '.', '.', '.','.','.', 'DE'],
+        ['#', '.', '.', 'P', '.', '.', '.','.','.', '#'],
+        ['#', '.', '.', 'F', 'F', '.', '.','.','.', '#'],
+        ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
+        ['#', '.', '.', '.', '.', '.', '.','.','.', '#'],
+        ['#', '#', '#', '#', '#', '#', '#','#','#', '#']
+    ]
 
-#     simulator = FireSimulator(matrix)
-#     asyncio.run(simulator.ignite_fire())
+    simulator = FireSimulator(matrix)
+    asyncio.run(simulator.ignite_fire())

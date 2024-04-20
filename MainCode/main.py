@@ -41,23 +41,15 @@ global matrix
 matrix= [
     ['#', '#', '#', '#', '#', '#', '#', '#'],
     ['#', '.', '.', '.', '.', '.', '.', '#'],
-    ['#', '.', '.', '.', '.', '.', 'P', '#'],
+    ['#', '.', '.', '.', '.', '.', '.', '#'],
     ['#', '.', '.', 'F', 'F', '.', '.', '#'],
     ['#', '.', '.', '.', '.', '.', '.', '#'],
+    ['#', '.', '.', '.', '.', 'P', '.', '#'],
     ['#', '.', '.', '.', '.', '.', '.', '#'],
     ['#', '#', '#', '#', 'DE', '#', '#', '#']
 ]
-
-def fireSimulatorrunner():
-    asyncio.run(fireSimulatorrunner(matrix))  # replace with the actual function
-process = multiprocessing.Process(target=fireSimulatorrunner)
-process.start()
-    # Stop the process after 10 seconds
-process.join(timeout=10)
-if process.is_alive():
-    print("Stopping the process...")
-    process.terminate()
-    process.join()
+# simulator = FireSimulator(matrix)
+# asyncio.run(simulator.ignite_fire())
 
 # Run Dijkstra's algorithm
 shortest_path, sum_of_weight = dijkstra(G, source_room, emergency_exit_rooms)
